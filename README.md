@@ -1,13 +1,11 @@
 
 radiospline
-J. Kelley, January 2015
+-----------
 
 A library for radio raytracing through ice using spline-table interpolation
 of precomputed ray solutions.
 
-Uses the photospline library by N. Whitehorn and J. Van Santen for spline
-evaluation and table I/O (.fits files), availaible from the CPC Program
-Library.
+Uses the [photospline](http://www.sciencedirect.com/science/article/pii/S0010465513001434) library by N. Whitehorn and J. Van Santen for spline evaluation and table I/O (.fits files), availaible from the CPC Program Library.
 
 REQUIREMENTS
 ------------
