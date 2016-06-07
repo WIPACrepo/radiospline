@@ -5,17 +5,20 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 # J. Kelley
 # 
 # TO DO
-# clean up find_library in radiospline CMakeLists
-# figure out why library source dependencies are broken (make doesn't
-# detect changes)
+# - clean up find_library in radiospline CMakeLists
+# - figure out why library source dependencies are broken (make doesn't
+#   detect changes)
+# - switch back to CPC when source is updated
+# - move tables into git
 #
 
 # Get the photospline project from SVN
 include(ExternalProject)
 ExternalProject_Add(photospline
   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/photospline
-  DOWNLOAD_NAME aepk_v1_0.tar.gz
-  URL http://cpc.cs.qub.ac.uk/cpc/cgi-bin/processrequest.pl/?catid=aepk_v1_0
+  DOWNLOAD_NAME aepk_v1_1.tar.gz
+  #URL http://cpc.cs.qub.ac.uk/cpc/cgi-bin/processrequest.pl/?catid=aepk_v1_0
+  URL http://icecube.wisc.edu/~jkelley/ara/aepk_v1_1.tar.gz
   UPDATE_COMMAND ""
   INSTALL_DIR ${CMAKE_BINARY_DIR}/install
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
