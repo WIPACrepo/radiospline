@@ -1,0 +1,38 @@
+# 
+# Sample Makefile for raytrace test binary, showing 
+# use of include files and libraries.  Adapt for your
+# own project.  
+#
+# To simply build the test programs, use
+# the cmake build process described in the documentation.
+# This does *not* build the libraries; again, use 
+# cmake for that.
+#
+# J. Kelley, WIPAC
+# May 2016
+#
+
+# Change paths as needed
+RADIOSPLINE_INCDIR=../../public
+PHOTOSPLINE_INCDIR=../../../photospline/public
+LIBDIR=../../../build/install/lib
+
+LIBS=-lphotospline -lradiospline
+
+CC=g++
+CFLAGS=-c -Wall -O2 -I$(RADIOSPLINE_INCDIR) -I$(PHOTOSPLINE_INCDIR)
+LDFLAGS=-L$(LIBDIR)
+SOURCES=ray.cxx
+OBJECTS=$(SOURCES:.cxx=.o)
+EXECUTABLE=ray
+
+all: $(SOURCES) $(EXECUTABLE)
+
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@ $(LIBS)
+
+%.o: %.cxx
+	$(CC) $(CFLAGS) $< -o $@
+
+clean: 
+	rm -f $(EXECUTABLE) *.o

@@ -1,0 +1,37 @@
+
+The generation of the spline tables is somewhat beyond the scope of this
+project, but the outline of the procedure used is noted here. 
+
+1. Precomputed time delay table
+
+A C++ program is used to precompute raytrace propagation delay tables
+(author: Ming-Yuan Lu) on a cylindrical grid using C. Weaver's raytracer in
+AraSim.  Two important points: first, the accuracy of the raytracer (the
+"miss distance") has been changed from the default 0.2m to 0.05m.  Second,
+the delays are linearly extrapolated into the firn shadow to avoid
+boundary artifacts in the spline fitting process.  The default exponential
+ice model is used.  The output is a ROOT file.
+
+1b. Precomputed firn shadow boundary table
+
+A Python script "shadow.py" (author: John Kelley) is used to precompute
+firn shadow boundaries using the AraSim raytracer.  The accuracy has been
+set to the same value as in step 1 of 0.05m.  The output is a text file.
+
+2. Translation of time delay tables to HDF5
+
+An iPython notebook "CylinderROOT2HDF5.ipynb" (author: John Kelley) is used
+to convert the .root output of Ming-Yuan's table computation to HDF5 for
+further use without ROOT.
+
+3. Spline fitting of the firn shadow boundary
+
+An iPython notebook "ShadowFitter.ipynb" (author: John Kelley) is used to
+fit the firn shadow boundary with 2D splines (fitting based on IceCube
+photospline).  The output is a FITS file containing the spline table.
+
+4. Spline fitting of the time delays
+
+(FIX ME)
+
+
