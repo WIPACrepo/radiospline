@@ -11,7 +11,7 @@ Requirements
 ------------
 
 - cmake, version >= 2.8.12.  A recent version is available on the WIPAC
-  machines at ~jkelley/bin/cmake.  
+  machines at `~jkelley/bin/cmake`.  
 
 - GSL, cfitsio, and BLAS libraries
 
@@ -20,10 +20,7 @@ Requirements
   setup.sh file, by adding this to your `.bash_profile` (or similar):
   
       eval `/cvmfs/icecube.opensciencegrid.org/py2-v2/setup.sh`
-
-   You will also need to help cmake find the libraries, by setting this environment variable:
-
-        $ export CFITSIOROOT=${SROOT}
+      export CFITSIOROOT=${SROOT}
 
   On MacOS X, these can be installed using the Homebrew tool
   (http://brew.sh): 
