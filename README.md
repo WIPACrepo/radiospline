@@ -23,7 +23,7 @@ Requirements
 
    You will also need to help cmake find the libraries, by setting this environment variable:
 
-      $ export CFITSIOROOT=${SROOT}
+        $ export CFITSIOROOT=${SROOT}
 
   On MacOS X, these can be installed using the Homebrew tool
   (http://brew.sh): 
@@ -51,7 +51,7 @@ cmake and make:
 Usage
 -----
 
-The examples in src/private/test show how to use the library for
+The examples in `src/private/test` show how to use the library for
 ray-tracing time delay calculation and firn shadow determination.  A
 sample Makefile is provided to show how to use the built libraries in your
 own project. 
