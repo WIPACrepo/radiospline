@@ -53,13 +53,17 @@ ray-tracing time delay calculation and firn shadow determination.  A
 sample Makefile is provided to show how to use the built libraries in your
 own project. 
 
-In an IceCube environment, you may need to add the GSL library to your
-library path:
+To run any of the sample binaries, add the library build path to your library path.  
 
-    $ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${I3_PORTS}/lib/gsl-1.14
+On Linux:
 
-Finally, to run any of the sample binaries, you'll need to tell the program
-where the table files are located by setting RADIOSPLINE_TABLE_DIR:
+   $ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:<radiospline directory>/build/install/lib
+
+On Mac OS X:
+
+   $ export DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}:<radiospline directory>/build/install/lib
+
+Finally, you'll need to tell the program where the table files are located by setting RADIOSPLINE_TABLE_DIR:
 
     $ export RADIOSPLINE_TABLE_DIR=<your radiospline tree>/resources/tables/exponential
 
