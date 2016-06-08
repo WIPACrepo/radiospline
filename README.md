@@ -21,6 +21,7 @@ Requirements
   
       eval `/cvmfs/icecube.opensciencegrid.org/py2-v2/setup.sh`
       export CFITSIOROOT=${SROOT}
+      export SUITESPARSEROOT=${SROOT}
 
   On MacOS X, these can be installed using the Homebrew tool
   (http://brew.sh): 
