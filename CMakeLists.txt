@@ -1,19 +1,17 @@
 cmake_minimum_required(VERSION 2.8.12)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/") 
 
 # Superbuild CMake file for radiospline and photospline library
 # J. Kelley
 # 
 # TO DO
-# - clean up find_library in radiospline CMakeLists
-# - figure out why library source dependencies are broken (make doesn't
-#   detect changes)
+# - figure out how to pass environment to photospline cmake
 # - switch back to CPC when source is updated
 # - move tables into git
 #
 
 # Get the photospline project from SVN
 set(photospline_url "http://icecube.wisc.edu/~jkelley/ara/aepk_v1_1.tar.gz")
+
 include(ExternalProject)
 ExternalProject_Add(photospline
   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/photospline
@@ -22,7 +20,7 @@ ExternalProject_Add(photospline
   DOWNLOAD_COMMAND curl ${photospline_url} | tar xzv -C ${CMAKE_CURRENT_SOURCE_DIR}
   UPDATE_COMMAND ""
   INSTALL_DIR ${CMAKE_BINARY_DIR}/install
-  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DCFITSIOROOT=${I3PORTS}
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
 
 # Grab the tables from the web

@@ -15,17 +15,21 @@ Requirements
 
 - GSL, cfitsio, and BLAS libraries
 
-  On the WIPAC cluster, these are available in the CVMFS I3_PORTS area
+  On the WIPAC cluster, these are available in the CVMFS area
   and will be detected by the build process if you have sourced the CVMFS
   setup.sh file, by adding this to your `.bash_profile` (or similar):
   
       eval `/cvmfs/icecube.opensciencegrid.org/py2-v2/setup.sh`
 
+   You will also need to help cmake find the libraries, by setting this environment variable:
+
+      $ export CFITSIOROOT=${SROOT}
+
   On MacOS X, these can be installed using the Homebrew tool
   (http://brew.sh): 
 
-     brew tap homebrew/science                 
-     brew install gsl openblas cfitsio cmake
+      brew tap homebrew/science                 
+      brew install gsl openblas cfitsio cmake
 
 Building
 --------
@@ -40,11 +44,9 @@ The test binaries and radiospline library will be installed in the build
 directory in install/bin and install/lib respectively.
 
 To rebuild, the following steps are currently required before re-running
-cmake and make (to be fixed):  
+cmake and make:  
 
-    # Careful with this step
-    $ cd build; rm -rf *  
-
+    $ cd build; rm -rf CMakeFiles CMakeCache.txt
 
 Usage
 -----
