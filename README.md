@@ -38,7 +38,7 @@ The libraries and test binaries can be built with the following steps:
     $ make
 
 The test binaries and radiospline library will be installed in the build
-directory in install/bin and install/lib respectively.
+directory in `install/bin` and `install/lib` respectively.
 
 To rebuild, the following steps are currently required before re-running
 cmake and make:  
