@@ -57,11 +57,11 @@ To run any of the sample binaries, add the library build path to your library pa
 
 On Linux:
 
-   $ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:<radiospline directory>/build/install/lib
+    $ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:<radiospline directory>/build/install/lib
 
 On Mac OS X:
 
-   $ export DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}:<radiospline directory>/build/install/lib
+    $ export DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}:<radiospline directory>/build/install/lib
 
 Finally, you'll need to tell the program where the table files are located by setting RADIOSPLINE_TABLE_DIR:
 
