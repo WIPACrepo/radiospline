@@ -2,7 +2,7 @@
 #define RADIOSPLINE_FIRNSHADOW_H_INCLUDED
 
 #include <string>
-#include <radiospline/SplineTable.h>
+#include <photospline/splinetable.h>
 
 class FirnShadow {
  public:
@@ -30,7 +30,7 @@ class FirnShadow {
     bool IsShadowed(double r, double z, double zRec) const;
 
  private:
-	SplineTable table_;
+    photospline::splinetable<> table_;
 };
 
 #endif

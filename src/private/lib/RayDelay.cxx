@@ -3,7 +3,7 @@
 #include <cmath>
 #include <radiospline/FirnShadow.h>
 #include <radiospline/RayDelay.h>
-#include <radiospline/SplineTable.h>
+#include <photospline/splinetable.h>
 
 RayDelay::RayDelay(const std::string &icefit,
                    const std::string &airfit,
@@ -15,17 +15,21 @@ RayDelay::~RayDelay() { }
 double RayDelay::GetPropagationTime(double r, double zRec, double zSrc) const {
 
     double coords[3] = {zSrc, zRec, r};
+    int centers[3];
     double tdelay = -1;
-
+    int derivatives = 0;
+    
     // Is the source in air?
     if (zSrc > 0) {
-        if (airtable_.IsSupported(coords))
-            airtable_.Eval(coords, &tdelay);
+        //if (airtable_.IsSupported(coords))
+        if (airtable_.searchcenters(coords, centers))
+            tdelay = airtable_.ndsplineeval(coords, centers, derivatives);
     }
     // Is the source outside the firn shadow?
     else if (!shadow_.IsShadowed(r, zRec, zSrc)) {
-        if (icetable_.IsSupported(coords))
-            icetable_.Eval(coords, &tdelay);
+        //if (icetable_.IsSupported(coords))
+        if (icetable_.searchcenters(coords, centers))
+            tdelay = icetable_.ndsplineeval(coords, centers, derivatives);
     }
 
     // FIX ME deal with very small distances

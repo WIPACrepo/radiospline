@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 2.8.12)
 
+SET(CMAKE_CXX_STANDARD 11)
+SET(CMAKE_C_STANDARD 99)
+
 # Piggyback on photospline's library-finding
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/../photospline/cmake/Packages/")
 include(CFITSIO)
@@ -12,7 +15,7 @@ find_path(PHOTOSPLINE_INCLUDE_DIR photospline/splinetable.h PATHS ${CMAKE_INSTAL
 # The primary library for interfacing to the spline raytrace tables
 add_library(radiospline
     SHARED
-    private/lib/SplineTable.cxx
+#    private/lib/SplineTable.cxx
 	private/lib/FirnShadow.cxx
     private/lib/RayDelay.cxx
     private/lib/IceGeometry.cxx
