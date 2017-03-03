@@ -21,14 +21,12 @@ double RayDelay::GetPropagationTime(double r, double zRec, double zSrc) const {
     
     // Is the source in air?
     if (zSrc > 0) {
-        //if (airtable_.IsSupported(coords))
-        if (airtable_.searchcenters(coords, centers))
+        if (airtable_.is_supported(coords) && airtable_.searchcenters(coords, centers))
             tdelay = airtable_.ndsplineeval(coords, centers, derivatives);
     }
     // Is the source outside the firn shadow?
     else if (!shadow_.IsShadowed(r, zRec, zSrc)) {
-        //if (icetable_.IsSupported(coords))
-        if (icetable_.searchcenters(coords, centers))
+        if (icetable_.is_supported(coords) && icetable_.searchcenters(coords, centers))
             tdelay = icetable_.ndsplineeval(coords, centers, derivatives);
     }
 
