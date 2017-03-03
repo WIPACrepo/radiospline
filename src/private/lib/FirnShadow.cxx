@@ -1,16 +1,19 @@
 #include <string>
 #include <radiospline/IceGeometry.h>
 #include <radiospline/FirnShadow.h>
-#include <radiospline/SplineTable.h>
+#include <photospline/splinetable.h>
 
 FirnShadow::FirnShadow(const std::string &path) : table_(path) { }
 FirnShadow::~FirnShadow() { }
 
 double FirnShadow::GetShadowDepth(double r, double zRec) const {
     double coords[2] = {zRec, r};
+    int centers[2];
     double result = 0;
+    int derivatives = 0;
     if ((zRec < ICE_Z_SURFACE) && (r >= 0))
-        table_.Eval(coords, &result);
+        if (table_.searchcenters(coords, centers))
+            result = table_.ndsplineeval(coords, centers, derivatives);
 
     return result;
 }

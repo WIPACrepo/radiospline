@@ -9,6 +9,9 @@ cmake_minimum_required(VERSION 2.8.12)
 # - move tables into git
 #
 
+SET(CMAKE_CXX_STANDARD 11)
+SET(CMAKE_C_STANDARD 99)
+
 # Get the photospline project from SVN
 set(photospline_url "http://icecube.wisc.edu/~jkelley/ara/aepk_v1_1.tar.gz")
 
@@ -17,7 +20,9 @@ ExternalProject_Add(photospline
   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/photospline
   #URL http://cpc.cs.qub.ac.uk/cpc/cgi-bin/processrequest.pl/?catid=aepk_v1_0
   #URL http://icecube.wisc.edu/~jkelley/ara/aepk_v1_1.tar.gz
-  DOWNLOAD_COMMAND curl ${photospline_url} | tar xzv -C ${CMAKE_CURRENT_SOURCE_DIR}
+  #DOWNLOAD_COMMAND curl ${photospline_url} | tar xzv -C ${CMAKE_CURRENT_SOURCE_DIR}
+  GIT_REPOSITORY https://github.com/jkelley/photospline.git
+  GIT_TAG master
   UPDATE_COMMAND ""
   INSTALL_DIR ${CMAKE_BINARY_DIR}/install
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>

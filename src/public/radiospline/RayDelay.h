@@ -2,7 +2,7 @@
 #define RADIOSPLINE_RAYDELAY_H_INCLUDED
 
 #include <string>
-#include <radiospline/SplineTable.h>
+#include <photospline/splinetable.h>
 #include <radiospline/FirnShadow.h>
 
 class RayDelay {
@@ -27,8 +27,8 @@ class RayDelay {
     double GetPropagationTime(double r, double zRec, double zSrc) const;
 
  private:
-	SplineTable icetable_;
-    SplineTable airtable_;
+    photospline::splinetable<> icetable_;
+    photospline::splinetable<> airtable_;
     FirnShadow shadow_;
 };
 
