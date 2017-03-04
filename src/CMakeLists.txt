@@ -15,9 +15,8 @@ find_path(PHOTOSPLINE_INCLUDE_DIR photospline/splinetable.h PATHS ${CMAKE_INSTAL
 # The primary library for interfacing to the spline raytrace tables
 add_library(radiospline
     SHARED
-#    private/lib/SplineTable.cxx
 	private/lib/FirnShadow.cxx
-    private/lib/RayDelay.cxx
+    private/lib/RayTrace.cxx
     private/lib/IceGeometry.cxx
 )
 

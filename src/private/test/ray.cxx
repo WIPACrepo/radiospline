@@ -1,18 +1,20 @@
 #include <iostream>
 #include <cstdlib>
+#include <unistd.h>
 
 #include "radiospline/IceGeometry.h"
-#include "radiospline/RayDelay.h"
+#include "radiospline/RayTrace.h"
 #include "radiospline/FirnShadow.h"
 
-//
-// Spline table names.  If you don't want to use the
-// environment variable RADIOSPLINE_TABLE_DIR below, feel
-// free to hard-code the paths here.
-//
-#define AIR_FILE "delay_inair.fits"
-#define ICE_FILE "delay_inice.fits"
-#define SHADOW_FILE "firn_shadow.fits"
+void usage(char *prog) {
+    std::cout << "Usage: " << prog << " -[adhlr] radius z_receiver z_source" << std::endl;
+    std::cout << "    OR " << prog << " -[adhlr] src_x src_y src_z trg_x trg_y trg_z detector_z" << std::endl;
+    std::cout << "   -h  print this usage" << std::endl;
+    std::cout << "   -a  print all available raytrace results (delay, launch angle, receipt angle)" << std::endl;
+    std::cout << "   -l  print launch angle (radians)" << std::endl;
+    std::cout << "   -r  print receipt angle (radians)" << std::endl;
+    std::cout << "   -d  print propagation delay (ns) [default]" << std::endl;
+}
 
 int main(int argc, char **argv) {
 
@@ -24,41 +26,71 @@ int main(int argc, char **argv) {
         return -1;
     }
     std::string tablePathStr(tablePath);
-      
+
     // Get command line arguments
     double r, zRec, zSrc;
+    int c;
+    int delay = 1;
+    int launch = 0;
+    int receipt = 0;
+    while ((c = getopt(argc, argv, "adhlr")) != -1) {
+        switch (c) {
+        case 'a':
+            delay = launch = receipt = 1;
+            break;
+        case 'd':
+            delay = 1;
+            break;
+        case 'l':
+            launch = 1;
+            delay = 0;
+            break;
+        case 'r':
+            receipt = 1;
+            delay = 0;
+            break;
+        case 'h':
+        default:
+            usage(argv[0]);
+            return 0;
+            break;
+        }
+    }
+
     // Source and receiver specified in cylindrical coordinates
-    if (argc == 4) {
-        r = std::atof(argv[1]);
-        zRec = std::atof(argv[2]);
-        zSrc = std::atof(argv[3]);
+    if (argc-optind == 3) {
+        r = std::atof(argv[optind]);
+        zRec = std::atof(argv[optind+1]);
+        zSrc = std::atof(argv[optind+2]);
     }
     //
     // Source and receiver specified in Cartesian coordinates
     // NOTE: you can use the helper function Detector2Cylinder below to convert 
     // your own coordinates into the table coordinate system
     //
-    else if (argc == 8) {
-        double coordSrc[3] = {std::atof(argv[1]), std::atof(argv[2]), std::atof(argv[3])};
-        double coordTrg[3] = {std::atof(argv[4]), std::atof(argv[5]), std::atof(argv[6])};
-        double zZero = std::atof(argv[7]);
+    else if (argc-optind == 7) {
+        double coordSrc[3] = {std::atof(argv[optind]), std::atof(argv[optind+1]), std::atof(argv[optind+2])};
+        double coordTrg[3] = {std::atof(argv[optind+3]), std::atof(argv[optind+4]), std::atof(argv[optind+5])};
+        double zZero = std::atof(argv[optind+6]);
         if (Detector2Cylinder(coordSrc, coordTrg, zZero, &r, &zRec, &zSrc) != 0)
             std::cout << "ERROR: couldn't convert to cylindrical coordinates." << std::endl;
     }
     else {
-        std::cout << "Usage: " << argv[0] << " radius z_receiver z_source" << std::endl;
-        std::cout << "    OR " << argv[0] << " src_x src_y src_z trg_x trg_y trg_z detector_z" << std::endl;
+        usage(argv[0]);
         return 0;
     }
 
     // Interface to the various spline tables
     // This object just needs to be created once
-    RayDelay ray(tablePathStr+"/"+ICE_FILE,
-                 tablePathStr+"/"+AIR_FILE,
-                 tablePathStr+"/"+SHADOW_FILE);
+    RayTrace ray(tablePathStr);
 
-    // Calculate the raytrace propagation time
-    double tdelay = ray.GetPropagationTime(r, zRec, zSrc);
-    std::cout << tdelay << std::endl;
+    // Calculate the raytrace results requests
+    if (delay)
+        std::cout << ray.GetPropagationTime(r, zRec, zSrc) << " ";
+    if (launch)
+        std::cout << ray.GetLaunchAngle(r, zRec, zSrc) << " ";
+    if (receipt)
+        std::cout << ray.GetReceiveAngle(r, zRec, zSrc) << " ";        
+    std::cout << std::endl;
     return 0;
 }
