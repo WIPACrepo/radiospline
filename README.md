@@ -34,6 +34,7 @@ Building
 
 The libraries and test binaries can be built with the following steps:
 
+    $ cd <radiospline directory>
     $ mkdir build; cd build
     $ cmake ..
     $ make
@@ -67,6 +68,5 @@ On Mac OS X:
 Finally, you'll need to tell the program where the table files are located by setting RADIOSPLINE_TABLE_DIR:
 
     $ export RADIOSPLINE_TABLE_DIR=<your radiospline tree>/resources/tables/exponential
-
 
 
