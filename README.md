@@ -54,6 +54,11 @@ cmake and make:
 
     $ cd build; rm -rf CMakeFiles CMakeCache.txt
 
+If this doesn't work for some reason, removing everything in the build directory may be
+necessary:
+
+    $ cd build; rm -rf *
+
 Usage
 -----
 
@@ -66,7 +71,7 @@ To run any of the sample binaries, add the library build path to your library pa
 
 On Linux:
 
-    $ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:<radiospline directory>/build/install/lib
+    $ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:<radiospline directory>/build/install/lib64:<radiospline>/build/install/lib
 
 On Mac OS X:
 
