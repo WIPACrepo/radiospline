@@ -39,6 +39,13 @@ The libraries and test binaries can be built with the following steps:
     $ cmake ..
     $ make
 
+Note: GCC 4.8 or later is required.  On the WIPAC cluster, you will need to execute
+
+    $ scl enable devtoolset-2 $SHELL
+
+before the `cmake` step in order to switch to a newer version of the GCC compiler than 
+the default. 
+
 The test binaries and radiospline library will be installed in the build
 directory in `install/bin` and `install/lib` respectively.
 
