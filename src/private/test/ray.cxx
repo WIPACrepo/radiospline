@@ -7,8 +7,8 @@
 #include "radiospline/FirnShadow.h"
 
 void usage(char *prog) {
-    std::cout << "Usage: " << prog << " -[adhlr] radius z_receiver z_source" << std::endl;
-    std::cout << "    OR " << prog << " -[adhlr] src_x src_y src_z trg_x trg_y trg_z detector_z" << std::endl;
+    std::cout << "Usage: " << prog << " -[adhlr] -- radius z_receiver z_source" << std::endl;
+    std::cout << "    OR " << prog << " -[adhlr] -- src_x src_y src_z trg_x trg_y trg_z detector_z" << std::endl;
     std::cout << "   -h  print this usage" << std::endl;
     std::cout << "   -a  print all available raytrace results (delay, launch angle, receipt angle)" << std::endl;
     std::cout << "   -l  print launch angle (radians)" << std::endl;

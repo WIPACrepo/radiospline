@@ -18,6 +18,7 @@ ExternalProject_Add(photospline
   # FIX ME this is a fork
   GIT_REPOSITORY https://github.com/jkelley/photospline.git
   GIT_TAG master
+  # GIT_TAG jk1.0
   UPDATE_COMMAND ""
   INSTALL_DIR ${CMAKE_BINARY_DIR}/install
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
