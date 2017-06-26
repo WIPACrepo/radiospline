@@ -92,5 +92,10 @@ int main(int argc, char **argv) {
     if (receipt)
         std::cout << ray.GetReceiveAngle(r, zRec, zSrc) << " ";        
     std::cout << std::endl;
+
+    // Print the secondary time delay if it exists
+    if ((delay) && (zSrc < 0))
+        std::cout << ray.GetReflectedPropagationTime(r, zRec, zSrc) << std::endl;
+    
     return 0;
 }

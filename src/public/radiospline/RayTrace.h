@@ -37,7 +37,12 @@ public:
     RayDelay(const std::string &path) : RayTraceResult(path+"/"+"delay_inice.fits",
                                                        path+"/"+"delay_inair.fits",
                                                        path+"/"+"firn_shadow.fits") { }
-                 
+
+    RayDelay(const std::string &path, const bool reflected) :
+    RayTraceResult(reflected ? path+"/"+"delay_inice_reflected.fits" : path+"/"+"delay_inice.fits",
+                   path+"/"+"delay_inair.fits",
+                   path+"/"+"firn_shadow.fits") { }
+    
     RayDelay(const std::string &icefit,
              const std::string &airfit,
              const std::string &firnfit) : RayTraceResult(icefit, airfit, firnfit) { }
@@ -105,6 +110,7 @@ public:
 class RayTrace {
 public:
     RayTrace(const std::string &path) : delay_(path),
+                                        delay_reflected_(path, true),
                                         launch_(path),
                                         receive_(path) { }
     ~RayTrace() { }
@@ -120,6 +126,21 @@ public:
         return delay_.GetPropagationTime(r, zRec, zSrc);
     }
 
+    /** Get time delay of raytrace from source to receiver (secondary path)
+     *
+     * @param[in]  r horizontal distance to emitter, m
+     * @param[in]  zRec depth of receiver, m (negative)
+     * @param[in]  zSrc depth of source, m
+     * @param[out] tdelay propagation delay in ns (negative if no solution) 
+     */
+    double GetReflectedPropagationTime(double r, double zRec, double zSrc) {
+        if (zSrc < 0)
+            return delay_reflected_.GetPropagationTime(r, zRec, zSrc);
+        else
+            return delay_.GetPropagationTime(r, zRec, zSrc);
+    }
+
+    
     /** Get launch angle of raytrace from source to receiver
      *
      * @param[in]  r horizontal distance to emitter, m
@@ -144,6 +165,7 @@ public:
 
 private:
     RayDelay delay_;
+    RayDelay delay_reflected_;
     RayLaunch launch_;
     RayReceive receive_;
 };
