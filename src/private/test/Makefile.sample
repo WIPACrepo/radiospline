@@ -12,16 +12,25 @@
 # May 2016
 #
 
-# Change paths as needed
+# If cfitio is in a non-standard directory, set the
+# CFITSIOROOT environment variable
+ifdef CFITSIOROOT
+      CFITSIO_INCDIR=$(CFITSIOROOT)/include
+else
+      CFITSIO_INCDIR=/usr/local/include
+endif
+
+# Adjust based on your project location
 RADIOSPLINE_INCDIR=../../public
-PHOTOSPLINE_INCDIR=../../../photospline/public
+PHOTOSPLINE_INCDIR=../../../photospline/include
 LIBDIR=../../../build/install/lib
+LIB64DIR=../../../build/install/lib64
 
 LIBS=-lphotospline -lradiospline
 
 CC=g++
-CFLAGS=-c -Wall -O2 -I$(RADIOSPLINE_INCDIR) -I$(PHOTOSPLINE_INCDIR)
-LDFLAGS=-L$(LIBDIR)
+CFLAGS=-std=c++0x -c -Wall -O2 -I$(RADIOSPLINE_INCDIR) -I$(PHOTOSPLINE_INCDIR) -I$(CFITSIO_INCDIR)
+LDFLAGS=-L$(LIBDIR) -L$(LIB64DIR)
 SOURCES=ray.cxx
 OBJECTS=$(SOURCES:.cxx=.o)
 EXECUTABLE=ray

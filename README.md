@@ -65,7 +65,8 @@ Usage
 The examples in `src/private/test` show how to use the library for
 ray-tracing time delay calculation and firn shadow determination.  A
 sample Makefile is provided to show how to use the built libraries in your
-own project. 
+own project. It is not needed to compile the test binaries as these are
+already built, it is just an example.
 
 To run any of the sample binaries, add the library build path to your library path.  
 
