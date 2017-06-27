@@ -34,15 +34,6 @@ class RayTraceResult {
 
 class RayDelay : public RayTraceResult {
 public:
-    RayDelay(const std::string &path) : RayTraceResult(path+"/"+"delay_inice.fits",
-                                                       path+"/"+"delay_inair.fits",
-                                                       path+"/"+"firn_shadow.fits") { }
-
-    RayDelay(const std::string &path, const bool reflected) :
-    RayTraceResult(reflected ? path+"/"+"delay_inice_reflected.fits" : path+"/"+"delay_inice.fits",
-                   path+"/"+"delay_inair.fits",
-                   path+"/"+"firn_shadow.fits") { }
-    
     RayDelay(const std::string &icefit,
              const std::string &airfit,
              const std::string &firnfit) : RayTraceResult(icefit, airfit, firnfit) { }
@@ -65,10 +56,6 @@ public:
 
 class RayLaunch : public RayTraceResult {
 public:
-    RayLaunch(const std::string &path) : RayTraceResult(path+"/"+"launch_inice.fits",
-                                                        path+"/"+"launch_inair.fits",
-                                                        path+"/"+"firn_shadow.fits") { }
-                 
     RayLaunch(const std::string &icefit,
              const std::string &airfit,
              const std::string &firnfit) : RayTraceResult(icefit, airfit, firnfit) { }
@@ -87,10 +74,6 @@ public:
 
 class RayReceive : public RayTraceResult {
 public:
-    RayReceive(const std::string &path) : RayTraceResult(path+"/"+"receipt_inice.fits",
-                                                         path+"/"+"receipt_inair.fits",
-                                                         path+"/"+"firn_shadow.fits") { }
-                 
     RayReceive(const std::string &icefit,
                const std::string &airfit,
                const std::string &firnfit) : RayTraceResult(icefit, airfit, firnfit) { }
@@ -109,10 +92,20 @@ public:
 
 class RayTrace {
 public:
-    RayTrace(const std::string &path) : delay_(path),
-                                        delay_reflected_(path, true),
-                                        launch_(path),
-                                        receive_(path) { }
+    RayTrace(const std::string &path) : delay_(path+"/"+"delay_inice.fits",
+                                               path+"/"+"delay_inair.fits",
+                                               path+"/"+"firn_shadow.fits"
+                                               ),
+                                        delay_reflected_(path+"/"+"delay_inice_reflected.fits",
+                                                         path+"/"+"delay_inair.fits",
+                                                         path+"/"+"firn_shadow.fits"),
+                                        launch_(path+"/"+"launch_inice.fits",
+                                                path+"/"+"launch_inair.fits",
+                                                path+"/"+"firn_shadow.fits"),
+                                        receive_(path+"/"+"receipt_inice.fits",
+                                                 path+"/"+"receipt_inair.fits",
+                                                 path+"/"+"firn_shadow.fits") { }
+
     ~RayTrace() { }
 
     /** Get time delay of raytrace from source to receiver
