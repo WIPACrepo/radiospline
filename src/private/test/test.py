@@ -26,13 +26,17 @@ try:
 except KeyError:
     pass
 
-
 # FIX ME: write pybindings instead of using test binaries
-def splinedelay(src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z):
+def splinedelay(src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z, reflected=False):
     cmd = os.path.join(BINDIR, "ray")
     cmd += " %f %f %f %f %f %f %f" % (src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z)
-    output = subprocess.check_output([cmd], shell=True, env=my_env)
-    return float(output.split('\n')[0])
+    output = subprocess.check_output([cmd], shell=True, env=my_env).split('\n')
+    if not reflected:
+        return float(output[0])
+    elif len(output) > 1:
+        return float(output[1])
+    else:
+        return -1        
 
 def splinelaunch(src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z):
     cmd = os.path.join(BINDIR, "ray")
@@ -124,6 +128,21 @@ class RayTests(unittest.TestCase):
             refreceive = case[7]
             print "receive:",refreceive,receive            
             self.failUnless(abs(receive-refreceive) < MAXDIFF)
+
+    def testReflectedDelayDifference(self):
+        # Maximum delay difference between splines and raytrace reference time, ns
+        MAXDIFF = 1.0
+        cases = [[1000., 0., -1500., 0., 0., -50., 0., 10753.9],
+                 [0., 200., -250., 0., 0., -150., 0., 2432],
+                 [3333.0, -23.0, -2800., 101., 400., -30., 0, 25374.5],                 
+                 [100., 0., -300., 0., 0., -150, 0, 2531.52],
+                 [17.888203, 35.615644, -170.004229, -2.581381, 9.378155, -190.642184, 0., 1952.21]]
+
+        for case in cases:
+            delay = splinedelay(*case[0:7], reflected=True)            
+            refdelay = case[7]
+            print "reflected:",refdelay,delay
+            self.failUnless(abs(delay-refdelay) < MAXDIFF)
             
 def main():
     unittest.main()
