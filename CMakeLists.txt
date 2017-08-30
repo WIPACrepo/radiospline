@@ -27,8 +27,8 @@ ExternalProject_Add(photospline
 # Grab the tables from the web
 ExternalProject_Add(radiospline_tables
     SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resources/tables/exponential
-    URL http://icecube.wisc.edu/~jkelley/ara/icetables_exponential_170607.tar.gz
-    URL_MD5 d6405b91ea306fe6cf23481390523857
+    URL http://icecube.wisc.edu/~jkelley/ara/icetables_exponential_170804.tar.gz
+    URL_MD5 0545f0794eb26fad6b2f9bcaeb8b496c
     UPDATE_COMMAND ""
     PATCH_COMMAND ""
     CONFIGURE_COMMAND ""
