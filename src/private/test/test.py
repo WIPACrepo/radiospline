@@ -12,9 +12,11 @@ LIBDIR = os.path.join(BUILDDIR, "install/lib")
 TABLEDIR = "../../../resources/tables/exponential"
 
 # Set up environment (UGLY)
-my_env = os.environ
+my_env = os.environ.copy()
 my_env['RADIOSPLINE_TABLE_DIR'] = os.path.abspath(TABLEDIR)
-my_env['LD_LIBRARY_PATH'] = os.path.abspath(os.path.join(BUILDDIR, LIBDIR))
+if 'LD_LIBRARY_PATH' not in my_env.keys():
+    my_env['LD_LIBRARY_PATH'] = ''
+my_env['LD_LIBRARY_PATH'] += os.pathsep + os.path.abspath(os.path.join(BUILDDIR, LIBDIR))
 try:
     my_env['LD_LIBRARY_PATH'] += os.pathsep + os.path.join(my_env['I3_PORTS'], "lib/gsl-1.14")
 except KeyError:
