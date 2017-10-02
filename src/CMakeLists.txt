@@ -9,6 +9,15 @@ include(CFITSIO)
 include(GSL)
 include(LAPACK)
 
+if(APPLE)
+  # See: https://cmake.org/Wiki/CMake_RPATH_handling
+  set(CMAKE_MACOSX_RPATH TRUE)
+  set(CMAKE_SKIP_BUILD_RPATH FALSE)
+  set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+  set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+  set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+endif(APPLE)
+
 find_library(PHOTOSPLINE_LIB photospline PATHS ${CMAKE_INSTALL_DIR}/lib)
 find_path(PHOTOSPLINE_INCLUDE_DIR photospline/splinetable.h PATHS ${CMAKE_INSTALL_DIR}/include)
 

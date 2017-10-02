@@ -13,14 +13,8 @@ TABLEDIR = "../../../resources/tables/exponential"
 
 # Set up environment (UGLY)
 my_env = os.environ
-if 'DYLD_LIBRARY_PATH' not in my_env:
-    my_env['DYLD_LIBRARY_PATH'] = ""
-if 'LD_LIBRARY_PATH' not in my_env:
-    my_env['LD_LIBRARY_PATH'] = ""
-
 my_env['RADIOSPLINE_TABLE_DIR'] = os.path.abspath(TABLEDIR)
-my_env['DYLD_LIBRARY_PATH'] += os.pathsep + os.path.abspath(os.path.join(BUILDDIR, LIBDIR))
-my_env['LD_LIBRARY_PATH'] += os.pathsep + os.path.abspath(os.path.join(BUILDDIR, LIBDIR))
+my_env['LD_LIBRARY_PATH'] = os.path.abspath(os.path.join(BUILDDIR, LIBDIR))
 try:
     my_env['LD_LIBRARY_PATH'] += os.pathsep + os.path.join(my_env['I3_PORTS'], "lib/gsl-1.14")
 except KeyError:
@@ -29,7 +23,7 @@ except KeyError:
 # FIX ME: write pybindings instead of using test binaries
 def splinedelay(src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z, reflected=False):
     cmd = os.path.join(BINDIR, "ray")
-    cmd += " %f %f %f %f %f %f %f" % (src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z)
+    cmd += " -- %f %f %f %f %f %f %f" % (src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z)
     output = subprocess.check_output([cmd], shell=True, env=my_env).split('\n')
     if not reflected:
         return float(output[0])
@@ -40,13 +34,13 @@ def splinedelay(src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z, reflected=False
 
 def splinelaunch(src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z):
     cmd = os.path.join(BINDIR, "ray")
-    cmd += " -l %f %f %f %f %f %f %f" % (src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z)
+    cmd += " -l -- %f %f %f %f %f %f %f" % (src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z)
     output = subprocess.check_output([cmd], shell=True, env=my_env)
     return float(output.split('\n')[0])
 
 def splinereceive(src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z):
     cmd = os.path.join(BINDIR, "ray")
-    cmd += " -r %f %f %f %f %f %f %f" % (src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z)
+    cmd += " -r -- %f %f %f %f %f %f %f" % (src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z)
     output = subprocess.check_output([cmd], shell=True, env=my_env)
     return float(output.split('\n')[0])
 
@@ -86,10 +80,8 @@ class RayTests(unittest.TestCase):
 
     def testLaunchAngle(self):
         # Maximum launch angle difference between splines and raytrace, radians
-        # (about 0.3 degrees)
-        # MAXDIFF = 0.005
-        # TEMP FIX ME
-        MAXDIFF = 0.05
+        # (about 0.4 degrees)
+        MAXDIFF = 0.007
 
         cases = [[1000., 0., -1500., 0., 0., -50., 0., 0.598753],
                  [0., 200., -250., 0., 0., -150., 0., 1.08745],
@@ -109,9 +101,7 @@ class RayTests(unittest.TestCase):
 
     def testReceiveAngle(self):
         # Maximum launch angle difference between splines and raytrace, radians
-        # MAXDIFF = 0.005
-        # TEMP FIX ME
-        MAXDIFF = 0.05
+        MAXDIFF = 0.007
         
         cases = [[1000., 0., -1500., 0., 0., -50., 0., 0.699766],
                  [0., 200., -250., 0., 0., -150., 0., 1.1381],
