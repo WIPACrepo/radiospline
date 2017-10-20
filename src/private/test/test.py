@@ -88,8 +88,7 @@ class RayTests(unittest.TestCase):
         cases = [[1000., 0., -1500., 0., 0., -50., 0., 0.598753],
                  [0., 200., -250., 0., 0., -150., 0., 1.08745],
                  [1000., 200., 50., 0., 0., -150., 0., 1.62647],
-# FIX ME this test case fails
-#                 [1111., 211., 2., 0., 0., -191., 0., 1.57284],
+                 [1111., 211., 2., 0., 0., -191., 0., 1.57284],
                  [4000., 0., -2200, 0, 0, -57, 0., 1.06561],
                  [20., 0., -150., 0., 0., -65., 0., 0.224117],
                  [4000., 0., -2200, 0, 0, -72, 0., 1.07255],  
@@ -98,7 +97,7 @@ class RayTests(unittest.TestCase):
         for case in cases:
             launch = splinelaunch(*case[0:7])
             reflaunch = case[7]
-            print "launch:",reflaunch,launch
+#            print "launch:",reflaunch,launch
             self.failUnless(abs(launch-reflaunch) < MAXDIFF)
 
     def testReceiveAngle(self):
@@ -108,9 +107,9 @@ class RayTests(unittest.TestCase):
         cases = [[1000., 0., -1500., 0., 0., -50., 0., 0.699766],
                  [0., 200., -250., 0., 0., -150., 0., 1.1381],
                  [1000., 200., 50., 0., 0., -150., 0., 2.52252],
-# FIX ME this test case fails  
-#                 [1111., 211., 2., 0., 0., -191., 0., 2.53153],
-#                 [4000., 0., -2200, 0, 0, -57, 0., 1.41274],
+                 [1111., 211., 2., 0., 0., -191., 0., 2.53153],
+# FIX ME this test case fails                   
+#                [4000., 0., -2200, 0, 0, -57, 0., 1.41274],
                  [20., 0., -150., 0., 0., -65., 0., 0.2417],                 
                  [4000., 0., -2200, 0, 0, -72, 0., 1.32092], 
                  [17.888203, 35.615644, -170.004229, -2.581381, 9.378155, -190.642184, 0., 2.13085]]
@@ -118,7 +117,7 @@ class RayTests(unittest.TestCase):
         for case in cases:
             receive = splinereceive(*case[0:7])
             refreceive = case[7]
-            print "receive:",refreceive,receive            
+#            print "receive:",refreceive,receive            
             self.failUnless(abs(receive-refreceive) < MAXDIFF)
 
     def testReflectedDelayDifference(self):
@@ -134,7 +133,7 @@ class RayTests(unittest.TestCase):
         for case in cases:
             delay = splinedelay(*case[0:7], reflected=True)            
             refdelay = case[7]
-            print "reflected:",refdelay,delay
+#            print "reflected:",refdelay,delay
             self.failUnless(abs(delay-refdelay) < MAXDIFF)
             
 def main():
