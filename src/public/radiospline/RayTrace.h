@@ -102,9 +102,15 @@ public:
                                         launch_(path+"/"+"launch_inice.fits",
                                                 path+"/"+"launch_inair.fits",
                                                 path+"/"+"firn_shadow.fits"),
+                                        launch_reflected_(path+"/"+"launch_inice_reflected.fits",
+                                                          path+"/"+"launch_inair.fits",
+                                                          path+"/"+"firn_shadow.fits"),
                                         receive_(path+"/"+"receipt_inice.fits",
                                                  path+"/"+"receipt_inair.fits",
-                                                 path+"/"+"firn_shadow.fits") { }
+                                                 path+"/"+"firn_shadow.fits"),
+                                        receive_reflected_(path+"/"+"receipt_inice_reflected.fits",
+                                                           path+"/"+"receipt_inair.fits",
+                                                           path+"/"+"firn_shadow.fits") { }
 
     ~RayTrace() { }
 
@@ -156,11 +162,41 @@ public:
         return receive_.GetReceiveAngle(r, zRec, zSrc);
     }
 
+    /** Get launch angle of raytrace from source to receiver (secondary path)
+     *
+     * @param[in]  r horizontal distance to emitter, m
+     * @param[in]  zRec depth of receiver, m (negative)
+     * @param[in]  zSrc depth of source, m
+     * @param[out] launch zenith angle from source, radians (negative if no solution) 
+     */        
+    double GetReflectedLaunchAngle(double r, double zRec, double zSrc) {
+        if (zSrc < 0)
+            return launch_reflected_.GetLaunchAngle(r, zRec, zSrc);
+        else
+            return launch_.GetLaunchAngle(r, zRec, zSrc);
+    }
+
+    /** Get receipt angle of raytrace from source to receiver (secondary path)
+     *
+     * @param[in]  r horizontal distance to emitter, m
+     * @param[in]  zRec depth of receiver, m (negative)
+     * @param[in]  zSrc depth of source, m
+     * @param[out] receipt zenith angle from source, radians (negative if no solution) 
+     */    
+    double GetReflectedReceiveAngle(double r, double zRec, double zSrc) {
+        if (zSrc < 0)
+            return receive_reflected_.GetReceiveAngle(r, zRec, zSrc);
+        else
+            return receive_.GetReceiveAngle(r, zRec, zSrc);            
+    }
+
 private:
     RayDelay delay_;
     RayDelay delay_reflected_;
     RayLaunch launch_;
+    RayLaunch launch_reflected_;
     RayReceive receive_;
+    RayReceive receive_reflected_;
 };
 
 

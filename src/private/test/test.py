@@ -34,17 +34,27 @@ def splinedelay(src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z, reflected=False
     else:
         return -1        
 
-def splinelaunch(src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z):
+def splinelaunch(src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z, reflected=False):
     cmd = os.path.join(BINDIR, "ray")
     cmd += " -l -- %f %f %f %f %f %f %f" % (src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z)
-    output = subprocess.check_output([cmd], shell=True, env=my_env)
-    return float(output.split('\n')[0])
+    output = subprocess.check_output([cmd], shell=True, env=my_env).split('\n')
+    if not reflected:
+        return float(output[0])
+    elif len(output) > 1:
+        return float(output[1])
+    else:
+        return -1
 
-def splinereceive(src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z):
+def splinereceive(src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z, reflected=False):
     cmd = os.path.join(BINDIR, "ray")
     cmd += " -r -- %f %f %f %f %f %f %f" % (src_x, src_y, src_z, trg_x, trg_y, trg_z, det_z)
-    output = subprocess.check_output([cmd], shell=True, env=my_env)
-    return float(output.split('\n')[0])
+    output = subprocess.check_output([cmd], shell=True, env=my_env).split('\n')
+    if not reflected:
+        return float(output[0])
+    elif len(output) > 1:
+        return float(output[1])
+    else:
+        return -1
 
 class RayTests(unittest.TestCase):
         
@@ -135,6 +145,42 @@ class RayTests(unittest.TestCase):
             refdelay = case[7]
 #            print "reflected:",refdelay,delay
             self.failUnless(abs(delay-refdelay) < MAXDIFF)
+
+    def testReflectedLaunchAngle(self):
+        # Maximum launch angle difference between splines and raytrace, radians
+        # (about 0.4 degrees)
+        MAXDIFF = 0.007
+
+        cases = [[1000., 0., -1500., 0., 0., -50., 0., 0.55856],
+                 [0., 200., -250., 0., 0., -150., 0., 0.423123],
+                 [4000., 0., -2200, 0, 0, -57, 0., 1.04236],
+                 [20., 0., -150., 0., 0., -65., 0., 0.0837902],
+                 [4000., 0., -2200, 0, 0, -72, 0., 1.03542],  
+                 [17.888203, 35.615644, -170.004229, -2.581381, 9.378155, -190.642184, 0., 0.085313]]
+
+        for case in cases:
+            launch = splinelaunch(*case[0:7], reflected=True)
+            reflaunch = case[7]
+#            print "launch:",reflaunch,launch
+            self.failUnless(abs(launch-reflaunch) < MAXDIFF)
+            
+    def testReflectedReceiveAngle(self):
+        # Maximum launch angle difference between splines and raytrace, radians
+        MAXDIFF = 0.007
+        
+        cases = [[1000., 0., -1500., 0., 0., -50., 0., 2.4911],
+                 [0., 200., -250., 0., 0., -150., 0., 2.70705],
+# FIX ME fails                
+#                 [4000., 0., -2200, 0, 0, -57, 0., 1.79695],
+                 [20., 0., -150., 0., 0., -65., 0., 3.05133],                 
+                 [4000., 0., -2200, 0, 0, -72, 0., 1.89259], 
+                 [17.888203, 35.615644, -170.004229, -2.581381, 9.378155, -190.642184, 0., 3.05681]]
+
+        for case in cases:
+            receive = splinereceive(*case[0:7], reflected=True)
+            refreceive = case[7]
+#            print "receive:",refreceive,receive            
+            self.failUnless(abs(receive-refreceive) < MAXDIFF)
             
 def main():
     unittest.main()

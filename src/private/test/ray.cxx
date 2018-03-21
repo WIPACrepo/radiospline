@@ -94,8 +94,15 @@ int main(int argc, char **argv) {
     std::cout << std::endl;
 
     // Print the secondary time delay if it exists
-    if ((delay) && (zSrc < 0))
-        std::cout << ray.GetReflectedPropagationTime(r, zRec, zSrc) << std::endl;
-    
+    if (zSrc < 0) {
+        if (delay)
+            std::cout << ray.GetReflectedPropagationTime(r, zRec, zSrc) << " ";
+        if (launch)
+            std::cout << ray.GetReflectedLaunchAngle(r, zRec, zSrc) << " ";
+        if (receipt)
+            std::cout << ray.GetReflectedReceiveAngle(r, zRec, zSrc) << " ";
+        std::cout << std::endl;
+    }
+
     return 0;
 }
